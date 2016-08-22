@@ -12,6 +12,10 @@ sed -i "s|  source_url.*|  source_url 'http://pkgs.fedoraproject.org/repo/pkgs/v
 crew install vim
 sudo crew remove readline
 
+# Download crouton
+wget -q -O ~/Downloads/crouton https://github.com/dnschneid/crouton/blob/master/installer/crouton
+
+
 # Clone personal dotfiles repository
 git clone https://github.com/nickmartin607/dotfiles.git
 
