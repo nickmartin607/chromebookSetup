@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+wget -q -O - https://raw.github.com/skycocker/chromebrew/master/install.sh | bash
+sed -i "s|  source_url.*|  source_url 'http://pkgs.fedoraproject.org/repo/pkgs/vim/vim-7.4.tar.bz2/607e135c559be642f210094ad023dc65/vim-7.4.tar.bz2'|" /usr/local/lib/crew/packages/vim.rb
+crew install vim
+sudo crew remove readline
+
+echo "1.  Mount root partition read/write, reboot."
+echo "2.  Run dotfile install for crosh."
