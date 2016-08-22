@@ -1,9 +1,19 @@
 #!/usr/bin/env sh
 
+cd ~
+
+# Pull and install Chromebrew Package Manager
 wget -q -O - https://raw.github.com/skycocker/chromebrew/master/install.sh | bash
+
+# Fixes VIM package url, as the default one is broken
 sed -i "s|  source_url.*|  source_url 'http://pkgs.fedoraproject.org/repo/pkgs/vim/vim-7.4.tar.bz2/607e135c559be642f210094ad023dc65/vim-7.4.tar.bz2'|" /usr/local/lib/crew/packages/vim.rb
+
+# Install VIM, remove readline as it breaks things
 crew install vim
 sudo crew remove readline
+
+# Clone personal dotfiles repository
+git clone https://github.com/nickmartin607/dotfiles.git
 
 echo "1.  Mount root partition read/write, reboot."
 echo "2.  Run dotfile install for crosh."
