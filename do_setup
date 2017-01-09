@@ -5,12 +5,15 @@ cd ~
 # Pull and install Chromebrew Package Manager
 wget -q -O - https://raw.github.com/skycocker/chromebrew/master/install.sh | bash
 
-# Fixes VIM package url, as the default one is broken
-#sed -i "s|  source_url.*|  source_url 'http://pkgs.fedoraproject.org/repo/pkgs/vim/vim-7.4.tar.bz2/607e135c559be642f210094ad023dc65/vim-7.4.tar.bz2'|" /usr/local/lib/crew/packages/vim.rb
-
 # Install VIM, remove readline as it breaks things
 crew install vim
-sudo crew remove readline
+crew install htop
+crew install netcat
+crew install python34
+#sudo crew remove readline
+
+# Install Vundle
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 # Download crouton
 wget -q -O ~/Downloads/crouton https://github.com/dnschneid/crouton/blob/master/installer/crouton
