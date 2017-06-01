@@ -1,6 +1,5 @@
-** Haven't used these scripts in about a year, things may be outdated. **
-
-** Intended to function on a Toshiba Chromebook 2 (CB35-3340), other models may require tweaks. **
+### Haven't used these scripts in about a year, things may be outdated.
+### Intended to function on a Toshiba Chromebook 2 (CB35-3340), other models may require tweaks.
 
 # Quick Install
 * Installs Crew(package manager) with python3.4, vim with Vundle, and Crouton
