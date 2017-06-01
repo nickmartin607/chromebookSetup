@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+if [ "$(id -u)" -ne "0" ]; then
+    prnt -e "Need to run as root, not with sudo"
+else
+	# Should work correctly, adapted from other script files
+	/bin/cp -f custom_crosh /usr/bin/crosh \
+	    && echo "Finished installing crosh." \
+	    || echo "Failed to install crosh."
+	
+    local crosh_sudoers_file='/etc/sudoers.d/crosh'
+    if [ ! -f $crosh_sudoers_file ]; then
+        sudo touch $crosh_sudoers_file \
+            || { prnt -w "Failed to install crosh sudoers file."; return; }
+        sudo echo "chronos ALL=(ALL) NOPASSWD: /usr/bin/power_supply_info" > $crosh_sudoers_file
+        sudo /bin/chmod 0440 $crosh_sudoers_file
+        sudo /bin/chown root:root $crosh_sudoers_file
+        
+        echo "Finished installing crosh sudoers file."
+    fi
+fi
+
