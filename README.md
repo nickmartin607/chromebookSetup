@@ -1,13 +1,11 @@
 ```
-**Haven't used these scripts in about a year, things may be outdated.**
+Haven't used these scripts in about a year, things may be outdated.
 ```
 
 # Quick Install
-
-## install
-Installs Crew(Package Manager) with python3.4, vim with Vundle, and Crouton
+Installs Crew(package manager) with python3.4, vim with Vundle, and Crouton
 ```sh
-wget -q -O - https://raw.githubusercontent.com/nickmartin607/chromeos_setup/master/do_setup | bash
+wget -q -O - https://raw.githubusercontent.com/nickmartin607/chromebookSetup/master/install | bash
 ```
 
 
@@ -16,12 +14,16 @@ wget -q -O - https://raw.githubusercontent.com/nickmartin607/chromeos_setup/mast
 
 ## mount_rootfs_rw
 Mounts the root filesystem as R/W
+
 *Intended to be used on a Toshiba Chromebook 2 (CB35-3340)*
 
 ## install_crosh
 Overrides default crosh shell, skips straight to bash shell.
+
 Displays a header first, contained within *custom_crosh*
+
 **Requires rootFS to be mounted R/W**
+
 **Must be ran from root account, not using sudo.**
 
 ## powman
