@@ -26,7 +26,7 @@ wget -q -O - https://raw.githubusercontent.com/nickmartin607/chromebookSetup/mas
 ```
 USAGE: sudo powman [options]
 Options:
-    -d, --disable   Disable Chromebook power managment features
-    -e, --enable    Enable Chromebook power managment features
+    -d, --disable   Disable Chromebook power management features
+    -e, --enable    Enable Chromebook power management features
     -s, --status    Check the power management status
 ```

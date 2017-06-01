@@ -7,8 +7,8 @@ usage() {
     echo "USAGE: sudo powman [options]"
     echo
     echo "Options:"
-    echo "    -d, --disable   Disable Chromebook power managment features"
-    echo "    -e, --enable    Enable Chromebook power managment features"
+    echo "    -d, --disable   Disable Chromebook power management features"
+    echo "    -e, --enable    Enable Chromebook power management features"
     echo "    -s, --status    Check the power management status"
 }
 
