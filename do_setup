@@ -5,11 +5,9 @@ cd ~
 # Pull and install Chromebrew Package Manager
 wget -q -O - https://raw.github.com/skycocker/chromebrew/master/install.sh | bash
 
-# Install VIM, remove readline as it breaks things
 crew install vim
-crew install htop
-crew install netcat
 crew install python34
+# Remove readline as it breaks things with vim (MAY HAVE BEEN FIXED)
 #sudo crew remove readline
 
 # Install Vundle
@@ -17,10 +15,3 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 # Download crouton
 wget -q -O ~/Downloads/crouton https://github.com/dnschneid/crouton/blob/master/installer/crouton
-
-
-# Clone personal dotfiles repository
-git clone https://github.com/nickmartin607/dotfiles.git
-
-echo "1.  Mount root partition read/write, reboot."
-echo "2.  Run dotfile install for crosh."

@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+# Intended for Toshiba Chromebook2 CB35-B3340
+
+if ! grep -iq swanky /etc/lsb-release 2>/dev/null; then 
+    echo "Only to be used on a Chromebook."
+elif mount | grep '/dev/root' | awk '{print $6}' | grep -q 'rw'; then
+    echo "Chromebook root filesystem is already mounted read/write"
+else
+    case "$(rootdev -s)" in
+        /dev/mmcblk0p5) kernel="4";;
+        /dev/mmcblk0p3) kernel="2";;
+        *)              kernel="";;
+    esac
+    
+    sudo crossystem dev_boot_signed_only=0
+    sudo /usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partition $kernel
+    
+    echo
+    read -p "RootFS verification removed. Reboot? [y/n] " rbt
+    [[ "$rbt" == "y" ]] && sudo reboot
+fi
+
+# vim:syntax=sh

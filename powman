@@ -1,0 +1,83 @@
+#!/usr/bin/env sh
+
+sysDir=/usr/share/power_manager
+usrDir=/var/lib/power_manager
+
+usage() {
+    echo "USAGE: sudo powman [options]"
+    echo
+    echo "Options:"
+    echo "    -d, --disable   Disable Chromebook power managment features"
+    echo "    -e, --enable    Enable Chromebook power managment features"
+    echo "    -s, --status    Check the power management status"
+}
+
+makeFile() { if [ -f $1 ]; then touch $1; chown power:power $1; chmod 644 $1; fi; }
+
+checkPM() { test -f $usrDir/ignore_external_policy; }
+
+checkStatus() { checkPM && pmStatus=0 || pmStatus=1; }
+
+disablePM() {
+    checkPM && { pmStatus=20; break; }
+
+    local f=
+    local files="ignore_external_policy use_lid disable_idle_suspend"
+    for f in $files; do makeFile "$usrDir/$f"; done
+    
+    echo 1 >$usrDir/ignore_external_policy
+    echo 0 >$usrDir/use_lid
+    echo 1 >$usrDir/disable_idle_suspend
+    
+    restartPM && pmStatus=10
+}
+
+enablePM() {
+    checkPM || { pmStatus=21; break; }
+    
+    local f=
+    local files="ignore_external_policy use_lid disable_idle_suspend"
+    for f in $files; do rm "$usrDir/$f" &>/dev/null; done
+    
+    restartPM && pmStatus=11
+}
+
+restartPM() {
+    if status powerd | grep -iq "start/running"
+        then restart powerd >/dev/null
+        else start powerd >/dev/null
+    fi
+}
+
+if [ $(id -u) -ne 0 ]; then
+    prnt -e "$0 must be run as root."
+    exit
+elif ! grep -iq swanky /etc/lsb-release 2>/dev/null; then
+    prnt -e "$0 can only be executed within ChromeOS."
+    exit
+elif [ $# -eq 0 ]; then
+    usage
+    exit
+fi
+
+pmStatus=
+while [ $# -gt 0 -a -z $pmStatus ]; do
+    case "$1" in
+        -d|--disable)   disablePM;;
+        -e|--enable)    enablePM;;
+        -s|--status)    checkStatus;;
+        *)              usage; exit;;
+    esac
+    shift
+done
+
+case $pmStatus in
+    0)  prnt "Power Management Services are Disabled.";;
+    1)  prnt "Power Management Services are Enabled.";;
+    10) prnt "Power Management Services are now Disabled.";;
+    11) prnt "Power Management Services are now Enabled.";;
+    20) prnt "Power Management Services were already Disabled.";;
+    21) prnt "Power Management Services were already Enabled.";;
+esac
+
+unset pmStatus usrDir sysDir

@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+
+RED="$(tput setaf 1)";      WHT="$(tput setaf 7)";      BLU="$(tput setaf 4)"
+RST="$(tput sgr0)";         BLD="$(tput bold)"
+
+BANNER="
+
+     ${BLU}:::${RED}= ===  ${BLU}:::  :::${RED}=====  ${BLU}:::  ${RED}===      ${BLU}:::${RED}=======   ${BLU}:::${RED}====   ${BLU}:::${RED}====   ${BLU}:::${RED}====  ${BLU}:::  :::${RED}= ===
+     ${BLU}:::${WHT}=====  ${BLU}:::  :::       ::: ${WHT}===       ${BLU}::: ${WHT}=== ===  ${BLU}:::  ${WHT}===  ${BLU}:::  ${WHT}===  ${BLU}:::${WHT}====  ${BLU}:::  :::${WHT}=====
+     ${RED}========  ===  ===       ======        === === ===  ========  =======     ===    ===  ========
+     ${WHT}=== ====  ===  ===       === ===       ===     ===  ===  ===  === ===     ===    ===  === ====
+     ${RED}===  ===  ===   =======  ===  ===      ===     ===  ===  ===  ===  ===    ===    ===  ===  ===
+     ${RST}
+     "
+
+p() { echo "  ${BOLD}${WHT}[${BLU}+${WHT}]${RST}  ${BOLD}$1${RST}$2"; }
+
+print_header() {
+    local ip=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' \
+        | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
+    local dt="$(date +'%A, %B %d')"
+    local pwrlvl=$(sudo power_supply_info | grep '^  percentage' | awk '{ print $2 }' \
+        | cut -f1 -d '.')
+    local pwrstate=$(sudo power_supply_info | grep '^  state' | awk '{ print $2 }')
+    local rootfs=$(cat /etc/mtab | grep rootfs | cut -f4 -d' ')
+
+    clear
+    # Print the banner
+    echo "${BANNER}"
+    # Print the date
+    p "Date:\t\t\t" "${dt}"
+    # Print the IP Address
+    [ -n "$ip" ] && p "IP Address:\t\t" "${ip}"
+    # Print the battery level/state
+    [ -n "$pwrlvl" ] && p "Battery Level:\t\t" "${pwrlvl}% (${pwrstate})"
+    # Notify if root filesystem is mounted RO
+    [ "$rootfs" = "ro" ] && echo && p "Root filesystem is mounted read-only."
+    
+    echo "\n"
+}
+
+print_header
+
+[ -z $SHLVL ] && exec /bin/bash -c "cd; SHELL=bash; bash"
